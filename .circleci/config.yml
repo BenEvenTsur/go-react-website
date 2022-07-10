@@ -20,7 +20,7 @@ jobs:
             npm install;
             npm run build;
             cd ../server;
-            timeout 25 go run server-side.go;
+            (timeout 15 go run server-side.go; exit 0)
 
 workflows:
   say-hello-workflow:
