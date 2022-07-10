@@ -19,7 +19,7 @@ jobs:
             cd ./client;
             npm install;
             npm run build;
-            cd ./server;
+            cd ../server;
             timeout 25 go run server-side.go;
 
 workflows:
