@@ -1,24 +1,29 @@
 version: 2.1
 
 jobs:
-  first-job:
+  initial-job:
     docker:
       - image: cimg/base:stable
     steps:
+      - run:
+          name: "Initialize Job"
+          command: "echo Initialize"
+  build-job:
+    docker:
+      - image: cimg/go:1.18-node
+    steps:
       - checkout
       - run:
-          name: "First Job"
-          command: "echo first-job; touch test.txt; pwd; ls -a"
-  second-job:
-    docker:
-      - image: cimg/go:1.18
-    steps:
-      - run:
-          name: "Second Job"
-          command: "echo second-job; pwd; ls -a"
+          name: "Build Job"
+          command: >-
+            cd ./client
+            npm install
+            npm run build
+            cd ./server
+            timeout 25 go run server-side.go
 
 workflows:
   say-hello-workflow:
     jobs:
-      - first-job
-      - second-job
+      - initial-job
+      - build-job
